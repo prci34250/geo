@@ -168,11 +168,11 @@ function retourOk(response, marker){
             console.log('appel ajax ' + resultat.geometry.lat + ',' +resultat.geometry.lng )
            lieuAjax(resultat.geometry.lat,resultat.geometry.lng)
             // detail
-
+// AJOUT D'UN TRUC
 
  // <!-- Parrtie à plier -->
-           cdHTML2 = `
-  <div id="lieu` + index + `" class="collapse" style="background-color:pink"> <!-- Parrtie à plier -->
+  cdHTML2 = `
+  <div id="lieu ${index} " class="collapse" style="background-color:pink"> <!-- Parrtie à plier -->
 <form method="post" action="../php/geop_inscrire.php" >
 <div id="cadre>" style="border-style: solid; border-width:3px;margin-top:3px;margin-left:3px;margin-right:3px;border-color:green">
   <div class="row">
