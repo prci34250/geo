@@ -1,0 +1,133 @@
+ <html>
+
+ 
+  <title>Geolocalisation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
+
+
+
+
+<div>
+  
+ <!-- <iframe id="osm"
+        width="75%" 
+        height="550" 
+        frameborder="0" 
+        scrolling="no" 
+        marginheight="0" 
+        marginwidth="0" 
+        src="http://www.openstreetmap.org/export/embed.html" 
+        style="border: 1px solid black">
+</iframe> -->
+  
+</div>
+
+  <div class="row" style="margin-top:10px">
+    <div class="col-lg-12" style="padding-left:20px; ">
+      
+      <button class="btn btn-primary" onclick="trouver()"> Trouvez moi </button>
+      <input  name="country" id="country" class="text" value="Palavas">
+      <hr>
+      <div id="result"></div>
+      <div id="adress"></div>
+      
+    </div>
+    <div class="col-lg-12">
+      <div style="width: 100vw; height: 100vh" id="map"></div>
+    </div>
+  </div>
+
+  
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+
+
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+
+<script>
+
+$( document ).ready(trouver('palavas')) ;
+
+var data = {};
+
+function trouver () {
+  
+  var country;
+  country=document.getElementById('country').value;
+  //navigator.geolocation.getCurrentPosition(navigatorSuccess, navigatorError, options);
+
+  latlng = getAdressName(country);
+  consoile.log (latlng)
+    // Recherche localisation et traitment en cas de succes dans mareposne()
+  //console.log(getAdressName(country));
+  //console.log(data.documentation);
+  //echo '<H1> FIN ACCES</H1>' ;
+  //https://api.opencagedata.com/geocode/v1/json?q=mauguio&key=YOUR-API-KEY&language=fr&pretty=1
+  $("button").toggleClass('btn-primary').toggleClass('btn-success');
+
+  // If OK 
+  // .....
+  /// ....
+}
+
+function retourOk(response){
+  $('#adress').html(response.results[0].formatted + ' ' + response.results[0].geometry.lat + ' ' + response.results[0].geometry.lng);
+  console.log(response)
+  return response.results[0].geometry ;
+}
+
+function retourKo(response){
+  alert("Aucun résultat !")
+}
+
+function getAdressName(query){
+  console.warn(query)
+
+  $('#adress').html('<div class="spinner-border"></div>')
+  
+  $.ajax({
+        url: 'https://api.opencagedata.com/geocode/v1/json',
+        method: 'GET',
+        data: {
+          'key': '4c93ad1799da497a90337834ebb9c067',
+          'q': query,
+          'no_annotations': 1
+          // see other optional params:
+          // https://opencagedata.com/api#forward-opt
+        },
+        dataType: 'json',
+        statusCode: {
+          200: function(response){  // success
+            //maFonctionReponse(response)
+            //console.log(response.results[0].formatted);
+            //console.log(response);
+            if(response.total_results === 0){
+              retourKo(response)
+            }else{
+              retourOk(response)
+            }
+          },
+          402: function(){
+            console.log('hit free-trial daily limit');
+            console.log('become a customer: https://opencagedata.com/pricing');
+          }
+          // other possible response codes:
+          // https://opencagedata.com/api#codes
+        }
+      });
+  
+  
+  
+}
+</script>
